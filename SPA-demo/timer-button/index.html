@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>timer button</title>
+    <link rel="stylesheet" href="./index.css"/>
+</head>
+<body>
+    <input id="add" type="button" value="添加定时器按钮">
+    <hr>
+    <div id='main'>
+
+    </div>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src='./index.js'></script>
+    <script>
+        $(function () {
+            var $btnAdd = $("#add");
+            $btnAdd.click(function() {
+                $timerButton.show({
+                    title: '发送验证码',
+                    num:4,
+                    onClick: function() {
+                        console.log('点击了定时器按钮')
+                    }
+                })
+            })
+        })
+    </script>
+</body>
+</html>

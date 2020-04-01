@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/common.css" />
+		<link rel="stylesheet" href="style.css">
+	</head>
+	<body>
+		<div class="box" id="box">
+		</div>
+	</body>
+	<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+	<script>
+		$(function() {
+			$show.carousel({
+				"img": ["./img/b5.png","./img/b1.png", "./img/b2.png", "./img/b3.png","./img/b4.png","./img/b5.png","./img/b1.png"],
+				"num": 7,
+				"id" : "#box",
+				"timer": '',
+				"speed" : 500,
+				"time" : 2000
+			})
+		})
+		var $show = (function(){
+			var index = 0;
+			function carousel(obj){
+				var $slider = $('<div class="slider" id="slider"></div>');
+				var $nav = $("<ul class='nav' id='navs'></ul>");
+				var $left = $('<span id="left" style="opacity:1"><</span>');
+				var $right = $('<span id="right" style="opacity:1">></span>'); 
+				$(obj.id).append($slider);
+				for(var i = 0; i < obj.img.length; i++) {
+					$slider.append("<div class='slide'><img src='"+obj.img[i]+"'/></div>");
+				};        
+				$(obj.id).append($left)
+				$(obj.id).append($right)
+				$(obj.id).append($nav)
+				for(var i = 0; i < obj.num; i++) {
+					$slider.append("<div class='slide'><img src="+obj.img[i]+" alt=''></div>");
+					if(i === 1) {
+						$nav.append("<li class='active'>"+i+"</li>");
+					} else if ( i!=0 && i!= obj.num-1) {
+						$nav.append("<li>"+i+"</li>");
+					} 
+				}
+				$(obj.id).mouseover(function() {
+					clearInterval(obj.timer)
+				})
+				$(obj.id).mouseout(function() {
+					animate(obj)
+				})
+				btn(obj);
+				animate(obj);  
+			}
+			function nav(obj,idx){
+				var pre = index; 
+				var num = 0;
+				var $slider = $(".slider");
+				index = idx;    
+				if(index > pre){ 
+					num=(index-pre)*1200
+					$slider.animate({"left" : '-='+num+'px'},obj.speed);
+				}else if(index < pre){
+					num=(pre-index)*1200
+					$slider.animate({"left" : '+='+num+'px'},obj.speed);            
+				}
+				changeCircles(index);
+			}
+			function btn(obj){
+				var $left = $('#left');
+				var $right = $('#right'); 
+				var $slider = $(".slider");
+				$right.click(function(){
+					if($slider.is(":animated")) {
+						return;
+					} 
+					else {
+						next(obj);
+						changeCircles(index);
+					}
+				});
+				$left.click(function(){
+					if($slider.is(":animated")) {
+						return;
+					} else {
+						prev(obj);
+						changeCircles(index);
+					}
+				}); 
+				$("ul").on("click","li",function(){ 
+					if($slider.is(":animated")) {
+						return;
+					} 
+					else {
+						nav(obj,$(this).text()-1);
+					}            
+				});   
+			}
+			function next(obj){
+				var $slider = $(".slider");
+				if($slider.is(":animated")) {
+					return;
+				} 
+				index++;
+				if(index < 5){
+					$slider.animate({left : "-=1200"},obj.speed);
+				}
+				else{
+					index = 0;
+					$slider.css("left","0px").animate({"left" : '-=1200px'},obj.speed);
+				}
+				changeCircles(index);
+			}
+			function prev(obj){
+				var $slider = $(".slider")
+				if($slider.is(":animated")) {
+					return;
+				} 
+				index--;
+				if(index < 0){
+					index = 4;
+					$slider.css("left","-7200px").animate({"left" : '+=1200px'},obj.speed);
+				}
+				else{
+					$slider.animate({left : "+=1200"},obj.speed);
+				}
+				changeCircles();
+			}
+			function changeCircles(index){
+				var $li = $(".nav").find("li");
+				$li.eq(index).addClass("active").siblings().removeClass("active");
+			}
+			function animate(obj){
+				obj.timer = setInterval(function(){
+					next(obj);
+				},obj.time);
+			}
+			return {
+				carousel:carousel
+			}  
+		})()		
+	</script>
+</html>

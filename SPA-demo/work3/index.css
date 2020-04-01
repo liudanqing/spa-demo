@@ -1,0 +1,15 @@
+#example {
+    margin: auto;
+    width: 45%;
+}
+#example td {
+    text-align: center;
+}
+p{
+    text-align: center;
+}
+#main {
+    width: 700px;
+    height:300px;
+    margin: 50 auto;
+}
